@@ -78,4 +78,10 @@ public class UserService {
         return idResponses;
     }
 
+    public void findUserAndUpdatePictureUrl(String url, String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("could not find user " + username));
+        user.setUserPictureURL(url);
+        userRepository.save(user);
+    }
+
 }

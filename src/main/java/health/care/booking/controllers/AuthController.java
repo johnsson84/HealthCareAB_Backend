@@ -124,6 +124,7 @@ public class AuthController {
         user.setMail(request.getMail());
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
+        user.setUserPictureURL(request.getUserPictureURL());
 
         // assign roles
         if (request.getRoles() == null || request.getRoles().isEmpty()) {

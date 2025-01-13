@@ -16,7 +16,7 @@ public class User {
     private String mail;
     private String firstName;
     private String lastName;
-
+    private String userPictureURL;
     private Set<Role> roles;
 
     public User() {
@@ -31,6 +31,13 @@ public class User {
         this.lastName = lastName;
     }
 
+    public String getUserPictureURL() {
+        return userPictureURL;
+    }
+
+    public void setUserPictureURL(String userPictureURL) {
+        this.userPictureURL = userPictureURL;
+    }
 
     public String getId() {
         return id;

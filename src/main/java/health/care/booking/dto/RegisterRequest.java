@@ -19,19 +19,30 @@ public class RegisterRequest {
     @NotBlank
     private String lastName;
 
+    private String userPictureURL;
+
     private Set<Role> roles;
 
     public RegisterRequest() {
     }
 
     public RegisterRequest(String username, String password, Set<Role> roles, String mail, String firstName,
-            String lastName) {
+            String lastName, String userPictureURL) {
         this.username = username;
         this.password = password;
         this.roles = roles;
         this.mail = mail;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.userPictureURL = userPictureURL;
+    }
+
+    public String getUserPictureURL() {
+        return userPictureURL;
+    }
+
+    public void setUserPictureURL(String userPictureURL) {
+        this.userPictureURL = userPictureURL;
     }
 
     public @NotBlank String getUsername() {
