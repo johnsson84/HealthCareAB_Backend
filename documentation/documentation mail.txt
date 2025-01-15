@@ -1,0 +1,18 @@
+####################################################
+
+http://localhost:8080/mail
+{
+"toEmail": "din mail",
+"subject": "testsubject mail",
+"text": "hej detta är text"
+}
+
+####################################################
+
+http://localhost:8080/mail/request
+{
+"toEmail": "din mail",
+"appointmentSummary": "hej detta är text"
+}
+
+####################################################

@@ -1,0 +1,25 @@
+Feedback in Postman
+
+!!! NOTIS: Justera värden efter vad som finns i databasen då det inte går att hålla det uppdaterat här
+pga konstanta databas ändringar.
+
+==============================================
+List all feedbacks from all
+GET http://localhost:8080/feedback/all
+
+==============================================
+Create a feedback
+POST http://localhost:8080/feedback/add
+{
+    "appointmentId": "677d3590c04f713b7cd04235",
+    "comment": "Trevlig filur.",
+    "rating": 5
+}
+
+==============================================
+List all feedbacks for one caregiver
+GET http://localhost:8080/feedback/caregiver/pedro
+
+==============================================
+Remove one feedback
+DELETE http://localhost:8080/feedback/delete/6777e42d5363be09bab42259

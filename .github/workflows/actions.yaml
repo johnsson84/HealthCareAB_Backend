@@ -1,0 +1,50 @@
+# Github Actions for backend.
+name: HealthCareAB_actions
+on:
+  push:
+    # Push only used with this branch for testing purposes. In this branch, make a change for whatever and do
+    # a git push and github actions will do its thing.
+    branches: [40-add-mail-to-github-actions]
+  pull_request:
+    # Normally github actions will only run when merging a pull request.
+    branches: [main, dev]
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Backend
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Create resources folder
+        run: mkdir -p ./src/main/resources/
+        shell: bash
+
+      - name: Setup backend variables to application.properties
+        # Add MONGO_URI and JWT_SECRET to your repo settings in "Secrets and Variables -> actions -> Repository Secrets".
+        run: |
+          echo "spring.data.mongodb.uri=${{ secrets.MONGO_URI}}" >> ./src/main/resources/application.properties
+          echo "spring.data.mongodb.database=HealthCareAB" >> ./src/main/resources/application.properties
+          echo "spring.application.name=booking" >> ./src/main/resources/application.properties
+          echo "spring.data.mongodb.auto-index-creation=true" >> ./src/main/resources/application.properties
+          echo "jwt.secret=${{secrets.JWT_SECRET}}" >> ./src/main/resources/application.properties
+          echo "jwt.expirationMs=36000000" >> ./src/main/resources/application.properties
+          echo "spring.mail.host=smtp.gmail.com"  >> ./src/main/resources/application.properties
+          echo "spring.mail.port=587" >> ./src/main/resources/application.properties
+          echo "spring.mail.username=johnmessoa@gmail.com" >> ./src/main/resources/application.properties
+          echo "spring.mail.password=${{secrets.MAIL_PASS}}" >> ./src/main/resources/application.properties
+          echo "spring.mail.properties.mail.smtp.auth=true" >> ./src/main/resources/application.properties
+          echo "spring.mail.properties.mail.smtp.starttls.enable=true" >> ./src/main/resources/application.properties
+        shell: bash
+
+      - name: Validate, compile, test and package maven project
+        run: mvn -B package --file ./pom.xml

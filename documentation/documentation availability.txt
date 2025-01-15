@@ -1,0 +1,41 @@
+####################################################
+
+Get all availability
+http://localhost:8080/availability
+
+####################################################
+####################################################
+
+Create availability for all Caregivers
+http://localhost:8080/availability/set/all
+
+if there are duplicates it will throw an error
+
+####################################################
+####################################################
+
+Create availability for one Caregiver
+http://localhost:8080/availability/set/one
+
+body:
+{
+	"careGiverId": "6772b87dff113f4e0fbbd7ae"
+}
+
+if there are duplicates on the same caregiver it should throw error
+
+####################################################
+####################################################
+
+Change availability hours
+http://localhost:8080/availability/change-availability
+
+body:
+{
+	"changingDates":["2025-01-03T08:30:00", "2025-01-03T09:00:00"],
+	"availabilityId": "6777e7a5bfbc82442d235433"
+}
+
+####################################################
+####################################################
+
