@@ -65,7 +65,7 @@ public class FeedbackService {
     public List<Feedback> getFeedbackForCaregiver(String caregiverUsername) throws Exception {
         User caregiver = userRepository.findByUsername(caregiverUsername)
                 .orElseThrow(() -> new RuntimeException("Caregiver not found!"));
-        if (caregiver.getRoles().contains(Role.ADMIN)) {
+        if (caregiver.getRoles().contains(Role.DOCTOR)) {
             return feedbackRepository.findAllByCaregiverUsername(caregiverUsername);
         } else {
             throw new Exception("Username is not a caregiver!");

@@ -32,7 +32,7 @@ public class FeedbackController {
     }
 
     // Get all feedbacks from a caregiver
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
     @GetMapping("/caregiver/{caregiverUsername}")
     public ResponseEntity<?> getCaregiverFeedback(@Valid @PathVariable String caregiverUsername) throws Exception {
         List<Feedback> allFeedback = feedbackService.getFeedbackForCaregiver(caregiverUsername);

@@ -11,6 +11,7 @@ import health.care.booking.services.AvailabilityService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -28,9 +29,10 @@ public class AvailabilityController {
     @Autowired
     private UserRepository userRepository;
 
+    @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
     @PostMapping("/set/all")
     public ResponseEntity<?> setAvailabilityAll() {
-        List<User> caregiverList = userRepository.findUserByRolesIs(Collections.singleton(Role.ADMIN));
+        List<User> caregiverList = userRepository.findUserByRolesIs(Collections.singleton(Role.DOCTOR));
 
         if (!availabilityService.loopCaregiverList(caregiverList)){
             return ResponseEntity.status(400).body("There are duplicate ");
@@ -57,7 +59,7 @@ public class AvailabilityController {
         User user = userRepository.findByUsername(username.toString()).orElseThrow(() -> new RuntimeException("could not find user: " + username));
         return availabilityRepository.findByCaregiverId(user.getId());
     }
-
+    @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
     @PutMapping("/change-availability")
     public ResponseEntity<?> changeAvailabilityHours(@Valid @RequestBody ChangeAvailabilityRequest changeAvailabilityRequest) {
         Availability changeDatesAvailability = availabilityRepository.findById(changeAvailabilityRequest.availabilityId).orElseThrow(() -> new RuntimeException("Could not find availability object"));
