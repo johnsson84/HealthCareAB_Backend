@@ -80,6 +80,7 @@ public class FeedbackTests {
 
     // Used in multiple tests
     public void arrangeFeedback() {
+
         savedFeedback = new Feedback();
         savedFeedback.setId("4");
         savedFeedback.setAppointmentId(appointment.getId());
@@ -92,6 +93,48 @@ public class FeedbackTests {
         feedbackDTO.setAppointmentId("3");
         feedbackDTO.setComment(savedFeedback.getComment());
         feedbackDTO.setRating(savedFeedback.getRating());
+    }
+
+    @Test
+    void averageGradeTest() throws Exception {
+        // Arrange
+        doctor.setId("2");
+        doctor.setUsername("doctorUser");
+        doctor.setPassword("Doctor123");
+        doctor.setFirstName("Doctor");
+        doctor.setLastName("Doctorsson");
+        doctor.setMail("doctor@feedback.com");
+        doctor.setRoles(Set.of(Role.ADMIN));
+
+        arrangeFeedback();
+        Feedback feedback1 = new Feedback();
+        feedback1.setRating(4);
+        feedback1.setCaregiverUsername(doctor.getUsername());
+        Feedback feedback2 = new Feedback();
+        feedback2.setCaregiverUsername(doctor.getUsername());
+        feedback2.setRating(5);
+        List<Feedback> feedbackList = List.of(feedback1, feedback2);
+
+        // Mock both repositories
+        when(userRepository.findByUsername(doctor.getUsername())).thenReturn(Optional.of(doctor));
+        when(feedbackRepository.findAllByCaregiverUsername(doctor.getUsername())).thenReturn(feedbackList);
+
+        // Act
+        double averageGrade = feedbackService.getAverageFeedbackGrade(doctor.getUsername());
+
+        // Assert
+        assertEquals(4.5, averageGrade, "Average grade calculation incorrect");
+        System.out.println("Success! Average grade calculated correctly.");
+
+        // Test with empty feedback list
+        when(feedbackRepository.findAllByCaregiverUsername(doctor.getUsername())).thenReturn(List.of());
+
+        // Act
+        double emptyAverage = feedbackService.getAverageFeedbackGrade(doctor.getUsername());
+
+        // Assert
+        assertEquals(0.0, emptyAverage, "Empty feedback list should return 0.0");
+        System.out.println("Success! Empty feedback list returns 0.0");
     }
 
     @Test

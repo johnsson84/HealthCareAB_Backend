@@ -35,6 +35,7 @@ public class UserController {
   @Autowired
   private UserRepository userRepository;
 
+
   @GetMapping("/find/{username}")
   public ResponseEntity<?> findUserByUsername(@Valid @PathVariable String username) {
     try {
@@ -43,8 +44,6 @@ public class UserController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
   }
-
-
 
   @GetMapping("/find-userId/{userId}")
   public ResponseEntity<?> findUserById(@Valid @PathVariable String userId) {
@@ -81,5 +80,6 @@ public class UserController {
         List<AvailabilityUserIdResponse> idResponses = userService.makeAndSendBackUserResponse(userIdList.getUserIds());
         return idResponses;
     }
+
 
 }
